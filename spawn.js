@@ -28,6 +28,7 @@ module.exports = function(spawn) {
 
         if( typeof result == 'string' ) {
           spawn.memory.creep_next_id += 1;
+          console.log('Spawn ' + spawn.name + ': Created creep ' + role['creepName'] + '.');
         } else {
           switch(result) {
             case ERR_INVALID_ARGS:
