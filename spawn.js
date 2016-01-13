@@ -14,9 +14,10 @@ module.export = function(spawn) {
       if( role.indexOf('memory') == -1 ) { role['memory'] = {role: 'NaN'}; }
 
       // Check creep exists, if not
-      if( role['creepName'] == null or typeof Game.creeps[role['creepName']] == 'undefined' ) {
+      if( role['creepName'] == null || typeof Game.creeps[role['creepName']] == 'undefined' ) {
         role['creepName'] = spawn.name + spawn.memory.creep_next_id.toString(16);
-        var result = spawn.createCreep(role['body'], role['creepName'], role['memory');
+
+        var result = spawn.createCreep(role['body'], role['creepName'], role['memory']);
 
         if( typeof result == 'string' ) {
           spawn.memory.creep_next_id += 1;
@@ -24,6 +25,7 @@ module.export = function(spawn) {
           switch(result) {
             case ERR_INVALID_ARGS:
                 console.log('ERROR: Invalid arguments in spawn creeper auto-generation.');
+                console.log(role.toString());
                 role['creepName'] = null;
                 break;
             case ERR_NAME_EXISTS:
