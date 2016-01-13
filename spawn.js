@@ -25,7 +25,7 @@ module.export = function(spawn) {
           switch(result) {
             case ERR_INVALID_ARGS:
                 console.log('ERROR: Invalid arguments in spawn creeper auto-generation.');
-                console.log(role.toString());
+                console.log(role);
                 role['creepName'] = null;
                 break;
             case ERR_NAME_EXISTS:
