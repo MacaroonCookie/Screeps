@@ -7,7 +7,9 @@ module.exports = function(spawn) {
   } else {
     creep_roles = spawn.memory.creep_roles;
 
-    for( var role in creep_roles ) {
+    for( var index in creep_roles ) {
+      var role = creep_roles[index];
+
       // Correct malformed creeper roles
       if( role.indexOf('body') == -1 ) { role['body'] = []; }
       if( role.indexOf('creepName') == -1 ) { role['creepName'] = null; }
@@ -25,7 +27,7 @@ module.exports = function(spawn) {
           switch(result) {
             case ERR_INVALID_ARGS:
                 console.log('ERROR: Invalid arguments in spawn creeper auto-generation.');
-                console.log(role);
+                console.log(role.toString());
                 role['creepName'] = null;
                 break;
             case ERR_NAME_EXISTS:
