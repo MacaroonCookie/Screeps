@@ -28,7 +28,7 @@ module.exports = function(spawn) {
 
         if( typeof result == 'string' ) {
           spawn.memory.creep_next_id += 1;
-          console.log('Spawn ' + spawn.name + ': Created creep ' + role['creepName'] + '.');
+          console.log('Spawn ' + spawn.name + ': Created creep ' + role['creepName'] + ' for Role #' + index + '.');
           break;
         } else {
           switch(result) {
