@@ -1,9 +1,10 @@
 module.exports = function(spawn) {
-
+  if( typeof spawn.memory.creep_next_id == 'undefined' ) {
+    spawn.memory.creep_next_id = 0;
+  }
 
   if( typeof spawn.memory.creep_roles == 'undefined' ) {
     spawn.memory.creep_roles = [];
-    spawn.memory.creep_next_id = 0;
   } else {
     creep_roles = spawn.memory.creep_roles;
 
