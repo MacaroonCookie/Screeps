@@ -19,6 +19,8 @@ module.exports = function(spawn) {
       // Check creep exists, if not
       if( role['creepName'] == null || typeof Game.creeps[role['creepName']] == 'undefined' ) {
         role['creepName'] = spawn.name + '-' + spawn.memory.creep_next_id.toString(16);
+        console.log('Spawn: ' + spawn.name);
+        console.log('Next ID: ' + spawn.memory.creep_next_id);
         console.log('New Name: ' + role['creepName']);
 
         var result = spawn.createCreep(role['body'], role['creepName'], role['memory']);
