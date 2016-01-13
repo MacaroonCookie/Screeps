@@ -1,4 +1,4 @@
-module.export = function(spawn) {
+module.exports = function(spawn) {
 
 
   if( typeof spawn.memory.creep_roles == 'undefined' ) {
