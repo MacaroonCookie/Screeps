@@ -8,6 +8,10 @@ module.exports.loop = function () {
 
   for( var cName in Game.creeps ) {
       var creep = Game.creeps[cName];
+
+      // Extend life if possible
+      Game.spawns.Galactica.renewCreep(creep);
+
       if( creep.memory.role == 'harvester') { harvester(creep); }
       else if( creep.memory.role == 'builder' ) { 
           if( creep.carry.energy == 0 ) {
