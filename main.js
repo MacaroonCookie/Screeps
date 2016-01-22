@@ -17,7 +17,8 @@ module.exports.loop = function () {
       var creep = Game.creeps[cName];
 
       // Extend life if possible
-      Game.spawns.Galactica.renewCreep(creep);
+      // Removing due to resource usage inefficiencies
+      //Game.spawns.Galactica.renewCreep(creep);
 
       if( creep.memory.role == 'harvester') {
         // Repair traveled roads
