@@ -35,15 +35,15 @@
 	        creep.build(nearSites[0]);
 	    }
 
-	    if( Game.spawns.Galactica.energy == Game.spawns.Galactica.energyCapacity ) {
+	    if( Game.spawns.Wonderland.energy == Game.spawns.Wonderland.energyCapacity ) {
 	        var closest_extension = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter:(obj)=>obj.structureType == STRUCTURE_EXTENSION && obj.energy < obj.energyCapacity});
 	        if( closest_extension != null ) {
 	            if( creep.transfer(closest_extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
 	                creep.moveTo(closest_extension, {reusePath:2});
 	            }
 	        }
-	    } else if( creep.transfer(Game.spawns.Galactica, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
-			creep.moveTo(Game.spawns.Galactica, {reusePath:2});
+	    } else if( creep.transfer(Game.spawns.Wonderland, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
+			creep.moveTo(Game.spawns.Wonderland, {reusePath:2});
 		}			
 	}
  }

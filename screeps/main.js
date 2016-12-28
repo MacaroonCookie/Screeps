@@ -18,7 +18,7 @@ module.exports.loop = function () {
 
       // Extend life if possible
       // Removing due to resource usage inefficiencies
-      //Game.spawns.Galactica.renewCreep(creep);
+      //Game.spawns.Wonderland.renewCreep(creep);
 
       if( creep.memory.role == 'harvester') {
         // Repair traveled roads
@@ -29,18 +29,18 @@ module.exports.loop = function () {
         harvester(creep);
       } else if( creep.memory.role == 'builder' ) {
           if( creep.carry.energy == 0 || (creep.carry.energy < (0.25*creep.carryCapacity) && creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 3).length == 0) ) {
-              if( Game.spawns.Galactica.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
-                  creep.moveTo(Game.spawns.Galactica);
+              if( Game.spawns.Wonderland.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
+                  creep.moveTo(Game.spawns.Wonderland);
               }
           } else {
-              var sites = Game.spawns.Galactica.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+              var sites = Game.spawns.Wonderland.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
               if( sites != null ) {
                   var res = creep.build(sites);
                   if( res == ERR_NOT_IN_RANGE ) {
                       creep.moveTo(sites);
                   }
               } /*else {
-                  sites = Game.spawns.Galactica.pos.findClosestByRange(FIND_STRUCTURES, {filter: (obj)=>obj.structureType==STRUCTURE_WALL && obj.hits < obj.hitsMax});
+                  sites = Game.spawns.Wonderland.pos.findClosestByRange(FIND_STRUCTURES, {filter: (obj)=>obj.structureType==STRUCTURE_WALL && obj.hits < obj.hitsMax});
                   if( sites != null && creep.repair(sites) ) {
                       creep.moveTo(sites);
                   }
@@ -55,8 +55,8 @@ module.exports.loop = function () {
         }
       } else if(creep.memory.role == 'upgrader') {
           if( creep.carry.energy == 0 ) {
-              if( Game.spawns.Galactica.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
-                  creep.moveTo(Game.spawns.Galactica);
+              if( Game.spawns.Wonderland.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
+                  creep.moveTo(Game.spawns.Wonderland);
               }
           } else {
               if( creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE ) {
