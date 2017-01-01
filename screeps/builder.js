@@ -50,15 +50,20 @@ var builder_handle = function(creep) {
       creep.memory['target']['set'] = false;
       creep.memory['status'] = 'collecting';
     } else if( creep.pos.inRangeTo(target_location['x'], target_location['y'], 3) ) {
+      var valid_target = false;
       creep.room.lookAt(target_location['x'], target_location['y']).forEach(
         function(obj) {
           if( obj.type == LOOK_CONSTRUCTION_SITES ) {
             if( creep.build(obj[LOOK_CONSTRUCTION_SITES]) != OK ) {
               console.log(creep.name + ' failed to build.');
+              valid_target = true;
             }
           }
         }
       );
+      if( ! valid_target ) {
+        creep.memory['target']['set'] = false;
+      }
     } else {
       creep.moveTo(target_location['x'], target_location['y']);
     }
