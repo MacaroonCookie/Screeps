@@ -1,4 +1,4 @@
-module.exports = function(spawn) {
+var  spawn_handler = function(spawn) {
   if( typeof spawn.memory.creep_next_id == 'undefined' ) {
     spawn.memory.creep_next_id = 0;
   }

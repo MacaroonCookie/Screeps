@@ -5,7 +5,7 @@
  * You can import it from another modules like this:
  * var mod = require('harvester'); // -> 'a thing'
  */
- module.exports = function(creep) {
+ var harvester = function(creep) {
      if( creep.carry.energy < 0.25*creep.carryCapacity || (creep.carry.energy < creep.carryCapacity && creep.pos.findInRange(FIND_SOURCES, 1).length) ){
 		var sources = creep.pos.findClosestByRange(FIND_SOURCES);
 		var manualSource = false;
@@ -35,15 +35,15 @@
 	        creep.build(nearSites[0]);
 	    }
 
-	    if( Game.spawns.Wonderland.energy == Game.spawns.Wonderland.energyCapacity ) {
-	        var closest_extension = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter:(obj)=>obj.structureType == STRUCTURE_EXTENSION && obj.energy < obj.energyCapacity});
+	    if( Game.spawns.Atlanta.energy == Game.spawns.Atlanta.energyCapacity ) {
+	        var closest_extension = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(obj) { return obj.structureType == STRUCTURE_EXTENSION && obj.energy < obj.energyCapacity; }});
 	        if( closest_extension != null ) {
 	            if( creep.transfer(closest_extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
 	                creep.moveTo(closest_extension, {reusePath:2});
 	            }
 	        }
-	    } else if( creep.transfer(Game.spawns.Wonderland, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
-			creep.moveTo(Game.spawns.Wonderland, {reusePath:2});
+	    } else if( creep.transfer(Game.spawns.Atlanta, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
+			creep.moveTo(Game.spawns.Atlanta, {reusePath:2});
 		}			
 	}
  }
