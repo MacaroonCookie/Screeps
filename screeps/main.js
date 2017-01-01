@@ -51,8 +51,8 @@ module.exports.loop = function () {
         }
       } else if(creep.memory.role == 'upgrader') {
           if( creep.carry.energy == 0 ) {
-              if( Game.spawns.Atlanta.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
-                  creep.moveTo(Game.spawns.Atlanta);
+              if( creep.harvest(creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE)) == ERR_NOT_IN_RANGE ) {
+                  creep.moveTo(creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE));
               }
           } else {
               if( creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE ) {
