@@ -11,7 +11,7 @@
 		var manualSource = false;
 		
 		if( typeof creep.memory.energySource != 'undefined' ) {
-		    var types = creep.room.lookAt(creep.memory.energySource.x, creep.memory.energySource.y);
+		    var types = creep.room.lookAt(parseint(creep.memory.energySource.x), parseint(creep.memory.energySource.y));
 		    for( var i=0; i<types.length; i++) {
 		        if( types[i].type == 'source' ) {
 		            manualSource = true;
