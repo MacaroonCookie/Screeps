@@ -18,7 +18,7 @@ module.exports.loop = function () {
 
       // Extend life if possible
       // Removing due to resource usage inefficiencies
-      //Game.spawns.Atlanta.renewCreep(creep);
+      //Game.spawns.Spawn1.renewCreep(creep);
 
       if( creep.memory.role == 'harvester') {
         // Repair traveled roads
@@ -30,11 +30,11 @@ module.exports.loop = function () {
       } else if( creep.memory.role == 'builder' ) {
         builder_handle(creep);
         /*if( creep.carry.energy == 0 || (creep.carry.energy < (0.25*creep.carryCapacity) && creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 3).length == 0) ) {
-              if( Game.spawns.Atlanta.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
-                  creep.moveTo(Game.spawns.Atlanta);
+              if( Game.spawns.Spawn1.transferEnergy(creep) == ERR_NOT_IN_RANGE ) {
+                  creep.moveTo(Game.spawns.Spawn1);
               }
           } else {
-              var sites = Game.spawns.Atlanta.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+              var sites = Game.spawns.Spawn1.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
               if( sites != null ) {
                   var res = creep.build(sites);
                   if( res == ERR_NOT_IN_RANGE ) {

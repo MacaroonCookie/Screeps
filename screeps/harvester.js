@@ -35,15 +35,15 @@
 	        creep.build(nearSites[0]);
 	    }
 
-	    if( Game.spawns.Atlanta.energy == Game.spawns.Atlanta.energyCapacity ) {
+	    if( Game.spawns.Spawn1.energy == Game.spawns.Spawn1.energyCapacity ) {
 	        var closest_extension = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(obj) { return obj.structureType == STRUCTURE_EXTENSION && obj.energy < obj.energyCapacity; }});
 	        if( closest_extension != null ) {
 	            if( creep.transfer(closest_extension, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
 	                creep.moveTo(closest_extension, {reusePath:2});
 	            }
 	        }
-	    } else if( creep.transfer(Game.spawns.Atlanta, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
-			creep.moveTo(Game.spawns.Atlanta, {reusePath:2});
+	    } else if( creep.transfer(Game.spawns.Spawn1, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
+			creep.moveTo(Game.spawns.Spawn1, {reusePath:2});
 		}			
 	}
  }
