@@ -1,40 +1,32 @@
 var task_harvest = {
-  body: {
-    required: [
-      MOVE,
-      WORK,
-      CARRY
-    ],
-    weight: {
-      MOVE: 0.25,
-      WORK: 0.25,
-      CARRY: 0.50,
-      ATTACK: 0.0,
-      RANGED_ATTACK: 0.0,
-      TOUGH: 0.0,
-      HEAL: 0.0,
-      CLAIM: 0.0
-    }
+  name: 'harvest',
+  memory_structure: {
+    targetId: null,
+    capacity: 1.0
   },
-  run: function(creep, target=null) {
-    if( typeof creep.memory['state'] == 'undefined' ) {
-      creep.memory['state'] = 'unassigned';
+  run: function(creep) {
+    if( creep.memory.target == null ) {
+      return TASK_FAILED;
     }
 
-    if( creep.memory['state'] == 'unassigned' ) {
-      if( _.sum(creep.carry) > 0 ) {
-        return OK;
-      } else {
-        creep.memory['state'] = 'moving';
+    var target = Game.getObjectById(creep.memory.targetId);
+    if( target == null ) {
+      return TASK_FAILED;
+    }
+
+    if( creep.pos.inRangeTo(target, 1) ) {
+      if( creep.harvest(target) != OK ) {
+        return TASK_FAILED;
       }
+    } else {
+      return TASK_FAILED;
     }
 
-    if( creep.memory['state'] == 'moving' ) {
-      creep.
+    if( _.sum(creep.carry) / creep.carryCapacity < creep.memory.capacity ) {
+      return TASK_WORKING;
     }
 
-    return OK;
+    return TASK_COMPLETED;
   }
 };
 
-module.exports = task_harvest;

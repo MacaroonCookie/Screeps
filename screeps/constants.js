@@ -1,7 +1,3 @@
-var constants = {
-  // Tasks
-  TASKS_ALL = [
-  ]
-};
-
-module.exports = constants;
+var TASK_WORKING = 'working';
+var TASK_FAILED = 'failed';
+var TASK_COMPLETED = 'completed';
