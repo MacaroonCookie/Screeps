@@ -1,21 +1,12 @@
 var task = {
-  body: {
-    required: [
-    ],
-    weight: {
-      MOVE: 1.0,
-      WORK: 0.0,
-      CARRY: 0.0,
-      ATTACK: 0.0,
-      RANGED_ATTACK: 0.0,
-      TOUGH: 0.0,
-      HEAL: 0.0,
-      CLAIM: 0.0
-    }
+  name: 'task',
+  memory_structure: {
+    target: null
   },
   run: function(creep) {
-    return OK;
+    return TASK_COMPLETED;
+    return TASK_FAILED;
+    return TASK_WORKING;
   }
 };
 
-module.exports = task;
