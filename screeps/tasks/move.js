@@ -9,7 +9,7 @@ var task_move = {
       return TASK_FAILED;
     }
 
-    var target = Game.getObjectById(target);
+    var target = Game.getObjectById(creep.memory.task.targetId);
     if( target == null ) {
       return TASK_FAILED;
     }

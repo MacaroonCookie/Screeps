@@ -5,11 +5,11 @@ var task_harvest = {
     capacity: 1.0
   },
   run: function(creep) {
-    if( creep.memory.target == null ) {
+    if( creep.memory.task.targetId == null ) {
       return TASK_FAILED;
     }
 
-    var target = Game.getObjectById(creep.memory.targetId);
+    var target = Game.getObjectById(creep.memory.task.targetId);
     if( target == null ) {
       return TASK_FAILED;
     }
@@ -22,7 +22,7 @@ var task_harvest = {
       return TASK_FAILED;
     }
 
-    if( _.sum(creep.carry) / creep.carryCapacity < creep.memory.capacity ) {
+    if( _.sum(creep.carry) / creep.carryCapacity < creep.memory.task.capacity ) {
       return TASK_WORKING;
     }
 

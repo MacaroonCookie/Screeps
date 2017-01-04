@@ -23,7 +23,7 @@ var transfer = {
     for(var resource in creep.carry) {
       if( resource == creep.memory.task.resource || creep.memory.task.resource == 'any' ) {
         var success = null;
-        if( creep.memory.amount == null ) {
+        if( creep.memory.task.amount == null ) {
           success = creep.transfer(target, resource);
         } else {
           success = creep.transfer(target, resource, creep.memory.task.amount);
