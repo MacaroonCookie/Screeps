@@ -5,10 +5,6 @@ var task_move = {
     range: 1
   },
   run: function(creep) {
-    if( creep.memory.taskData.targetId == null ) {
-      return TASK_FAILED;
-    }
-
     var target = Game.getObjectById(creep.memory.taskData.targetId);
     if( target == null ) {
       return TASK_FAILED;

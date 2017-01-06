@@ -6,10 +6,6 @@ var transfer = {
     amount: null
   },
   run: function(creep) {
-    if( creep.memory.task.targetId == null ) {
-      return TASK_FAILED;
-    }
-
     var target = Game.getObjectById(creep.memory.task.targetId);
     if( target == null ) {
       return TASK_FAILED;

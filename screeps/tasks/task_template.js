@@ -1,7 +1,7 @@
 var task = {
   name: 'task',
   memory_structure: {
-    target: null
+    targetId: null
   },
   run: function(creep) {
     return TASK_COMPLETED;
