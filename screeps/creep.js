@@ -1,51 +1,20 @@
-function Creep(creep) {
-
-  this.creep = creep;
-  this.init();
-  this.run();
-}
-
-Creep.prototype.ROLE_HARVESTER = 'H';
-Creep.prototype.ROLE_BUILDER = 'B';
-Creep.prototype.ROLE_UPGRADER = 'U';
-Creep.prototype.ROLE_ATTACKER = 'A';
-Creep.prototype.ROLE_UNASSIGNED = 'nil';
-
-Creep.prototype.TASK_UNASSIGNED = 0;
-Creep.prototype.TASK_ATTACK = 1;
-Creep.prototype.TASK_HARVEST = 2;
-Creep.prototype.TASK_DELIVER = 4;
-Creep.prototype.TASK_TRANSFER = 8;
-Creep.prototype.TASK_BUILD = 16;
-Creep.prototype.TASK_UPGRADE = 32;
-Creep.prototype.TASK_REPAIR = 64;
-
-Creep.prototype.STATE_INACTIVE = 0;
-
-Creep.prototype.ROLES = {
-  Creep.ROLE_UNASSIGNED:  require('creep_role_unassigned'),
-  Creep.ROLE_HARVESTER:   require('creep_role_harvester'),
-  Creep.ROLE_BUILDER:     require('creep_role_builder'),
-  Creep.ROLE_UPGRADER:    require('creep_role_upgrader'),
-  Creep.ROLE_ATTACKER:    require('creep_role_attacker')
+var creep_base_memory_structure = {
+  roleName: UNASSIGNED,
+  roleData: {},
+  taskName: UNASSIGNED,
+  taskData: {}
 };
 
-function Creep.prototype.init() {
-  if( ! 'role' in this.creep.memory ) {
-    this.creep.memory['role'] = this.ROLE_UNASSIGNED;
-  }
+var creep_handle = {
+  run: function(creep) {
 
-  if( ! 'state' in this.creep.memory ) {
-    this.creep.memory['state'] = this.STATE_NULL;
-  }
+    // Memory Checking and parsing
+    helper_set_memory_structure(creep.memory, null, creep_base_memory_structure);
 
-  if( ! 'task' in this.creep.memory ) {
-    this.creep.memory['task'] = this.TASK_UNASSIGNED;
+    try {
+      role_handle.run(creep);
+    } catch(err) {
+      Game.notify('Creep (' + creep.name + ') failed: ' + err + '.');
+    }
   }
 }
-
-function Creep.prototype.run() {
-  this.ROLES[this.creep.memory['role']](this);
-}
-
-module.exports = Creep;

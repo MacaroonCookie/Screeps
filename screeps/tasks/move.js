@@ -5,30 +5,31 @@ var task_move = {
     range: 1
   },
   run: function(creep) {
-    if( creep.memory.task.targetId == null ) {
+    if( creep.memory.taskData.targetId == null ) {
       return TASK_FAILED;
     }
 
-    var target = Game.getObjectById(creep.memory.task.targetId);
+    var target = Game.getObjectById(creep.memory.taskData.targetId);
     if( target == null ) {
       return TASK_FAILED;
     }
 
-    if( ! creep.pos.inRange(target, creep.memory.task.range) ) {
+    if( ! creep.pos.inRange(target, creep.memory.taskData.range) ) {
       if( creep.fatigue > 0 ) {
         return TASK_WORKING;
       }
 
       var success = creep.moveTo(target);
       if( success == OK || success == ERR_TIRED ) {
-        if( creep.pos.inRange(target, creep.memory.task.range) ) {
+        if( creep.pos.inRange(target, creep.memory.taskData.range) ) {
           return TASK_COMPLETED;
         } else {
           return TASK_WORKING;
         }
       }
 
-    return TASK_COMPLETED;
+      return TASK_COMPLETED;
+    }
   }
 };
 
