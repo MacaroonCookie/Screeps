@@ -8,8 +8,8 @@ var role_harvester = {
     target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
         { filter: function(obj) {
             return 
-              obj.structureType in [STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER]
-              && _.sum(obj.store) != obj.storeCapacity;
+              (obj.structureType in [STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER])
+              && obj.store < obj.storeCapacity;
           }
         }
     );
@@ -34,7 +34,7 @@ var role_harvester = {
 
     if( target == null) {
       // No active construction, go repair roads
-      target = creep.pos.findClosestByPath(FIND_STRUCTURE, {
+      target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         algorith: 'dijkstra',
         filter: function(obj) {
           return obj.structureType == STRUCTURE_ROAD && obj.hits < obj.hitsMax;
@@ -44,7 +44,7 @@ var role_harvester = {
 
     if( target == null ) {
       // No raods to repair (lol, yeah right), do walls
-      target = creep.pos.findClosestByPath(FIND_STRUCTURE, {
+      target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         algorithm: 'dijkstra',
         filter: function(obj) {
           return obj.structureType == STRUCTURE_WALL && obj.hits<obj.hitsMax;
@@ -52,22 +52,26 @@ var role_harvester = {
       });
     }
 
+    console.log('Target: (' + target.pos.x + ',' + target.pos.y + ')');
     return target;
   },
   pre_task: function(creep) {
-    if( creep.taskName == UNASSIGNED ) {
+    if( creep.memory.taskName == UNASSIGNED ) {
+      console.log("Carrying " + creep_handle.carryPercent(creep));
       // If the resource ran out of energy before we are full and we are not full
-      if( task_status == TASK_FAILED && creep_handle.carryPercent(creep) < 0.75 ) {
+      var target = null;
+      if( creep_handle.carryPercent(creep) < 75 ) {
         // Move to source to collect more
         target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       } else {
         target = role_harvester.find_delivery_target(creep);
       }
 
+      console.log(target);
       if( target == null ) {
         creep_handle.switch_task(creep, UNASSIGNED);
       } else {
-        creep_handle.switch_task('move');
+        creep_handle.switch_task(creep, 'move');
         creep.memory.taskData.targetId = target.id;
       }
     }
@@ -82,7 +86,7 @@ var role_harvester = {
       var target = null;
 
       // If the resource ran out of energy before we are full and we are not full
-      if( task_status == TASK_FAILED && creep_handle.carryPercent(creep) < 0.75 ) {
+      if( task_status == TASK_FAILED && creep_handle.carryPercent(creep) < 75 ) {
         // Move to source to collect more
         target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       } else {
@@ -92,7 +96,7 @@ var role_harvester = {
       if( target == null ) {
         creep_handle.switch_task(creep, UNASSIGNED);
       } else {
-        creep_handle.switch_task('move');
+        creep_handle.switch_task(creep, 'move');
         creep.memory.taskData.targetId = target.id;
       }
     }
@@ -105,30 +109,23 @@ var role_harvester = {
         // Otherwise determine what to do next
         var target = Game.getObjectById(creep.memory.taskData.targetId);
         var next_task = UNASSIGNED;
-        switch(typeof target) {
-          case Source:
-            next_task = 'harvest';
-            break;
-          case StructureStorage:
-          case StructureContainer:
-          case StructureSpawn:
-          case StructureExtension:
-            next_task = 'store';
-            break;
-          case StructureWall:
-          case StructureRampart:
-          case StructureRoad:
+
+        if(target instanceof Source)                    next_task = 'harvest';
+        else if( target instanceof StructureStorage )   next_task = 'store';
+        else if( target instanceof StructureContainer ) next_task = 'store';
+        else if( target instanceof StructureSpawn )     next_task = 'store';
+        else if( target instanceof StructureExtension ) next_task = 'store';
+        else if( target instanceof StructureWall )      next_task = 'repair';
+        else if( target instanceof StructureRampart )   next_task = 'repair';
+        else if( target instanceof StructureRoad )      next_task = 'repair';
+        else if( target instanceof StructureTower ) {
+          if( target.hits / target.hitsMax < 5 ) {
             next_task = 'repair';
-            break;
-          case StructureTower:
-            if( target.hits / target.hitsMax < 0.5 ) {
-              next_task = 'repair';
-            } else if( target.energy < target.energyCapactiy ) {
-              next_task = 'store';
-            } else {
-              next_task = 'repair';
-            }
-            break;
+          } else if( target.energy < target.energyCapactiy ) {
+            next_task = 'store';
+          } else {
+            next_task = 'repair';
+          }
         }
 
         creep_handle.switch_task(creep, next_task);
@@ -145,13 +142,13 @@ var role_harvester = {
           creep_handle.switch_task(creep, UNASSIGNED);
           return;
         } else if( task_name == 'repair' ) {
-          if( ! creep.pos.inRange(target, 3) ) {
+          if( ! creep.pos.inRangeTo(target, 3) ) {
             creep_handle.switch_task(creep, 'move');
             creep.memory.taskData.targetId = target.id;
             return;
           }
         } else if( task_name == 'store' ) {
-          if( ! creep.pos.inRange(target, 1) ) {
+          if( ! creep.pos.inRangeTo(target, 1) ) {
             creep_handle.switch_task(creep, 'move');
             creep.memory.taskData.targetId = target.id;
             return;

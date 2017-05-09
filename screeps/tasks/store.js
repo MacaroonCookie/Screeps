@@ -9,7 +9,7 @@ var task_store = {
       return TASK_FAILED;
     }
 
-    if( ! creep.pos.inRange(target, 1) ) {
+    if( ! creep.pos.inRangeTo(target, 1) ) {
       return TASK_FAILED;
     } else {
       var result = creep.transfer(target);

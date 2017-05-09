@@ -10,14 +10,14 @@ var task_move = {
       return TASK_FAILED;
     }
 
-    if( ! creep.pos.inRange(target, creep.memory.taskData.range) ) {
+    if( ! creep.pos.inRangeTo(target, creep.memory.taskData.range) ) {
       if( creep.fatigue > 0 ) {
         return TASK_WORKING;
       }
 
       var success = creep.moveTo(target);
       if( success == OK || success == ERR_TIRED ) {
-        if( creep.pos.inRange(target, creep.memory.taskData.range) ) {
+        if( creep.pos.inRangeTo(target, creep.memory.taskData.range) ) {
           return TASK_COMPLETED;
         } else {
           return TASK_WORKING;

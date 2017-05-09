@@ -5,15 +5,15 @@
  * @param strict - if true, keys or types do not match given structure are corrected
  */
 function helper_set_memory_structure(memory, key, structure, strict) {
-  string = strict || false;
+  strict = strict || false;
 
-  if( key != null && ! key in memory ) {
+  if( key != null && ! (key in memory) ) {
     memory[key] = Object.assign({}, structure);
   } else {
     var memory_focus = (key == null) ? memory : memory[key];
 
     for(struct_key in structure) {
-      if( ! struct_key in memory_focus ) {
+      if( ! (struct_key in memory_focus) ) {
         if( typeof structure[struct_key] == "object" ) {
           memory_focus[struct_key] = Object.assign({}, structure[struct_key]);
         } else {

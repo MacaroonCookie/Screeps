@@ -1,1 +1,1 @@
-module.exports = function(creep) { return; };
+var role_upgrader = function(creep) { return; };

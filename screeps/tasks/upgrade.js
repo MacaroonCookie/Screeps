@@ -9,7 +9,7 @@ var task_upgrade = {
       return TASK_FAILED;
     }
 
-    if( ! creep.pos.inRange(target, 3) ) {
+    if( ! creep.pos.inRangeTo(target, 3) ) {
       return TASK_FAILED;
     }
 
