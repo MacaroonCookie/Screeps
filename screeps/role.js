@@ -1,5 +1,7 @@
-var roles = [
-];
+var roles = {
+  UNASSIGNED: null,
+  harvester: role_harvester,
+};
 
 var role_handle = {
   run: function(creep) {
@@ -7,19 +9,17 @@ var role_handle = {
       throw 'Role is unassigned';
     }
 
-    var creep_role = null;
-    for( role in roles ) {
-      if( creep.memory.roleName == role.name ) {
-        creep_role = role;
-        break;
-      }
-    }
-
-    if( creep_role == null ) {
+    var creep_role_name = creep.memory.roleName;
+    if( ! creep_role_name in roles ) {
       throw 'Role (' + creep.memory.roleName + ') is not defined';
     } else {
-      helper_set_memory_structure(creep.memory, 'roleData', creep_role.memory_structure, true);
-      creep_role.run(creep);
+      creep_role = roles[creep_name];
     }
+
+    helper_set_memory_structure(creep.memory, 'roleData', creep_role.memory_structure);
+
+    creep_role.pre_task(creep);
+    var task_status = task_handle(creep);
+    creep_role.post_task(creep, task_status);
   }
 };

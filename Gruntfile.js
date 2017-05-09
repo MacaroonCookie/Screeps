@@ -18,7 +18,9 @@ module.exports = function(grunt) {
         files: {
           'compiled/main.js': [
             'screeps/*.js',
-            'screeps/**/*.js'
+            'screeps/**/*.js',
+            'screeps/**/**/*.js',
+            'screeps/**/**/**/*.js'
           ]
         }
       }
