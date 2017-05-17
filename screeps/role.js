@@ -7,14 +7,13 @@ var role_handle = {
   run: function(creep) {
     if( creep.memory.roleName == UNASSIGNED ) {
       //throw 'Role is unassigned';
-      console.log('Role is unassigned');
+      console.log('[CREEP=' + creep.name + '] Role is unassigned');
       return;
     }
 
     var creep_role_name = creep.memory.roleName;
     if( ! (creep_role_name in roles) ) {
-      throw 'Role (' + creep.memory.roleName + ') is not defined';
-      console.log('Role (' + creep.memory.roleName + ') is not defined');
+      console.log('[CREEP=' + creep.name + '] Role (' + creep.memory.roleName + ') is not defined');
       return;
     }
 

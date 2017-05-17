@@ -1,1 +1,1 @@
-module.exports = function(creep) { return; };
+var unassigned = function(creep) { return; };

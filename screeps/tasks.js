@@ -1,7 +1,8 @@
 var tasks = {
-  UNASSIGNED: task_unassigned,
+  'unassigned': task_unassigned,
   'harvest': task_harvest,
   'move': task_move,
+  'upgrade': task_upgrade,
 };
 
 var task_handle = {

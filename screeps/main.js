@@ -1,5 +1,9 @@
 module.exports.loop = function() {
-  for( creep in Game.creeps ) {
-    creep_handle.run(Game.creeps[creep]);
+  for(var creep in Game.creeps ) {
+    try {
+      creep_handle.run(Game.creeps[creep]);
+    } catch(err) {
+      console.log('[CREEP=' + creep.name + '][ERROR] ' + err.stack);
+    }
   }
 }

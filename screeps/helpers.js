@@ -12,7 +12,7 @@ function helper_set_memory_structure(memory, key, structure, strict) {
   } else {
     var memory_focus = (key == null) ? memory : memory[key];
 
-    for(struct_key in structure) {
+    for(var struct_key in structure) {
       if( ! (struct_key in memory_focus) ) {
         if( typeof structure[struct_key] == "object" ) {
           memory_focus[struct_key] = Object.assign({}, structure[struct_key]);

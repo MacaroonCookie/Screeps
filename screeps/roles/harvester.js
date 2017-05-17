@@ -8,8 +8,9 @@ var role_harvester = {
     target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
         { filter: function(obj) {
             return 
-              (obj.structureType in [STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER])
-              && obj.store < obj.storeCapacity;
+              _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
+              && ( ( obj.store && obj.store < obj.storeCapacity )
+                   || ( obj.energy && obj.energy < obj.energyCapacity ) );
           }
         }
     );
@@ -50,6 +51,11 @@ var role_harvester = {
           return obj.structureType == STRUCTURE_WALL && obj.hits<obj.hitsMax;
         }
       });
+    }
+
+    if( target == null ) {
+      // If all else fails, find a controller
+      target = creep.room.controller;
     }
 
     console.log('Target: (' + target.pos.x + ',' + target.pos.y + ')');
@@ -118,6 +124,7 @@ var role_harvester = {
         else if( target instanceof StructureWall )      next_task = 'repair';
         else if( target instanceof StructureRampart )   next_task = 'repair';
         else if( target instanceof StructureRoad )      next_task = 'repair';
+        else if( target instanceof StructureController ) next_task = 'upgrade';
         else if( target instanceof StructureTower ) {
           if( target.hits / target.hitsMax < 5 ) {
             next_task = 'repair';
@@ -133,7 +140,7 @@ var role_harvester = {
       }
     }
 
-    if( creep.memory.taskName == 'repair' || creep.memory.taskName == 'store' ) {
+    if( _.contains(['repair', 'store', 'upgrade'], creep.memory.taskName) ) {
       var target = Game.getObjectById(creep.memory.taskData.targetId);
       var task_name = creep.memory.taskName;
 
@@ -147,7 +154,7 @@ var role_harvester = {
             creep.memory.taskData.targetId = target.id;
             return;
           }
-        } else if( task_name == 'store' ) {
+        } else if( task_name == 'store' || task_name == 'upgrade' ) {
           if( ! creep.pos.inRangeTo(target, 1) ) {
             creep_handle.switch_task(creep, 'move');
             creep.memory.taskData.targetId = target.id;

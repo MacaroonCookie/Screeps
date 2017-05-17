@@ -17,17 +17,16 @@ var creep_handle = {
       console.log("[creep=" + creep.name + "](Switch Task) From '" + creep.memory.taskName + "' to '" + task_name + "'");
       creep.memory.taskName = task_name;
       helper_set_memory_structure(creep.memory, 'taskData', eval("task_"+task_name).memory_structure, true);
-    }
+    } else {
+      console.log("[CREEP=" + creep.name + "] Task (" + task_name + ") does not exist.");
   },
   run: function(creep) {
     // Memory Checking and parsing
     helper_set_memory_structure(creep.memory, null, creep_base_memory_structure);
-
-    //try {
+    try {
       role_handle.run(creep);
-    /*} catch(err) {
-      console.log('Creep (' + creep.name + ') failed: ' + err + '.');
-      throw err
-    }*/
+    }catch(err) {
+      throw '[CREEP=' + creep.name + '] ' + err;
+    }
   }
 }
