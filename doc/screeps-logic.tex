@@ -1,0 +1,31 @@
+\documentclass[a4paper,11pt,draft]{article}
+
+\usepackage{dirtree}
+
+\title{Screeps Documentation}
+\author{Seth Cook \textless cooker52@gmail.com\textgreater}
+\date{2017-03-25}
+
+\begin{document}
+  \maketitle
+
+  \section{Project Layout}
+  I have attempted to break the project out like a standard software project,
+  where the source code, compiled project, documentation, and NodeJS
+  dependencies reside under their own sub-directories. Files within the root
+  directory :q
+
+  \dirtree{%
+    .1 /.
+      .2 compiled.
+      .2 doc.
+      .2 node\_modules.
+      .2 screeps.
+        .3 roles.
+        .3 tasks.
+  }
+
+  \section{Global Logic}
+  \section{Resources \& Economy}
+  \section{Creep Logic}
+\end{document}
