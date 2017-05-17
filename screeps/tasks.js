@@ -3,6 +3,9 @@ var tasks = {
   'harvest': task_harvest,
   'move': task_move,
   'upgrade': task_upgrade,
+  'build': task_build,
+  'repair': task_repair,
+  'store': task_store,
 };
 
 var task_handle = {
@@ -24,6 +27,7 @@ var task_handle = {
 
     helper_set_memory_structure(creep.memory, 'taskData', creep_task.memory_structure);
 
-    return creep_task.run(creep)
+    var result = creep_task.run(creep);
+    return result;
   }
 };

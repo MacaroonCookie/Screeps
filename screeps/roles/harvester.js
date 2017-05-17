@@ -7,13 +7,14 @@ var role_harvester = {
     // Not going to collect, go store
     target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
         { filter: function(obj) {
-            return 
-              _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
+            return _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
               && ( ( obj.store && obj.store < obj.storeCapacity )
                    || ( obj.energy && obj.energy < obj.energyCapacity ) );
           }
         }
     );
+    console.log('[CREEP=' + creep.name + '] Target ' + target);
+    console.log('[CREEP=' + creep.name + '] POS ('+creep.pos.x+','+creep.pos.y+')');
 
     if( target == null ) {
       // Focus on towers next
@@ -105,9 +106,7 @@ var role_harvester = {
         creep_handle.switch_task(creep, 'move');
         creep.memory.taskData.targetId = target.id;
       }
-    }
-
-    if( creep.memory.taskName == 'move' ) {
+    } else if( creep.memory.taskName == 'move' ) {
       if( task_status == TASK_FAILED ) {
         // The object no longer exists, reset logic
         creep_handle.switch_task(creep, UNASSIGNED);
@@ -125,6 +124,7 @@ var role_harvester = {
         else if( target instanceof StructureRampart )   next_task = 'repair';
         else if( target instanceof StructureRoad )      next_task = 'repair';
         else if( target instanceof StructureController ) next_task = 'upgrade';
+        else if( target instanceof ConstructionSite )   next_task = 'build';
         else if( target instanceof StructureTower ) {
           if( target.hits / target.hitsMax < 5 ) {
             next_task = 'repair';
@@ -138,9 +138,7 @@ var role_harvester = {
         creep_handle.switch_task(creep, next_task);
         creep.memory.taskData.targetId = target.id;
       }
-    }
-
-    if( _.contains(['repair', 'store', 'upgrade'], creep.memory.taskName) ) {
+    } else if( _.contains(['repair', 'store', 'upgrade', 'build'], creep.memory.taskName) ) {
       var target = Game.getObjectById(creep.memory.taskData.targetId);
       var task_name = creep.memory.taskName;
 
@@ -148,7 +146,7 @@ var role_harvester = {
         if( target == null ) {
           creep_handle.switch_task(creep, UNASSIGNED);
           return;
-        } else if( task_name == 'repair' ) {
+        } else if( task_name == 'repair' || task_name == 'build' ) {
           if( ! creep.pos.inRangeTo(target, 3) ) {
             creep_handle.switch_task(creep, 'move');
             creep.memory.taskData.targetId = target.id;

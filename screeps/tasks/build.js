@@ -1,5 +1,5 @@
-var task_repair = {
-  name: 'repair',
+var task_build = {
+  name: 'build',
   memory_structure: {
     targetId: null
   },
@@ -9,12 +9,12 @@ var task_repair = {
       return TASK_FAILED;
     }
 
-    var result = creep.repair(target);
+    var result = creep.build(target);
     if( result != OK ) {
       return TASK_FAILED;
     }
 
-    if( target.hits < target.hitsMax && creep.carry[RESOURCE_ENERGY] > 0 ) {
+    if( target.progress < target.progressTotal && creep.carry[RESOURCE_ENERGY] > 0 ) {
       return TASK_WORKING;
     }
 

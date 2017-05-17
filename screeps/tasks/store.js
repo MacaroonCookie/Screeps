@@ -4,7 +4,7 @@ var task_store = {
     targetId: null
   },
   run: function(creep) {
-    var target = Game.getObjectId(creep.memory.taskData.targetId);
+    var target = Game.getObjectById(creep.memory.taskData.targetId);
     if( target == null ) {
       return TASK_FAILED;
     }
@@ -12,13 +12,13 @@ var task_store = {
     if( ! creep.pos.inRangeTo(target, 1) ) {
       return TASK_FAILED;
     } else {
-      var result = creep.transfer(target);
-      if( result != OK ) {
-        return TASK_FAILED;
+      var result = creep.transfer(target, RESOURCE_ENERGY);
+      if( result == OK ) {
+        return TASK_COMPLETED;
       }
     }
 
-    return TASK_COMPLETED;
+    return TASK_FAILED;
   }
 };
 
