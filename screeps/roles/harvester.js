@@ -4,29 +4,33 @@ var role_harvester = {
   find_delivery_target: function(creep) {
     var target = null;
 
-    // Not going to collect, go store
-    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
-        { filter: function(obj) {
-            return _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
-              && ( ( obj.store && obj.store < obj.storeCapacity )
-                   || ( obj.energy && obj.energy < obj.energyCapacity ) );
+    if( creep.room.controller.ticksToDowngrade < 1000 ) {
+      target = creep.room.controller;
+    } else {
+      // Not going to collect, go store
+      target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+          { filter: function(obj) {
+              return _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
+                && ( ( obj.store && obj.store < obj.storeCapacity )
+                     || ( obj.energy && obj.energy < obj.energyCapacity ) );
+            }
           }
-        }
-    );
-    console.log('[CREEP=' + creep.name + '] Target ' + target);
-    console.log('[CREEP=' + creep.name + '] POS ('+creep.pos.x+','+creep.pos.y+')');
+      );
+      console.log('[CREEP=' + creep.name + '] Target ' + target);
+      console.log('[CREEP=' + creep.name + '] POS ('+creep.pos.x+','+creep.pos.y+')');
 
-    if( target == null ) {
-      // Focus on towers next
-      target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {
-        algorithm: 'dijkstra',
-        filter: function(obj) {
-          return obj.structureType == STRUCTURE_TOWER &&
-            ( obj.energy < obj.energyCapacity ||
-              obj.hits < obj.hitsMax 
-            );
-        }
-      });
+      if( target == null ) {
+        // Focus on towers next
+        target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {
+          algorithm: 'dijkstra',
+          filter: function(obj) {
+            return obj.structureType == STRUCTURE_TOWER &&
+              ( obj.energy < obj.energyCapacity ||
+                obj.hits < obj.hitsMax 
+              );
+          }
+        });
+      }
     }
 
     if( target == null ) {
