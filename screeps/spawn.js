@@ -52,7 +52,7 @@ var spawn_handle = {
       room_energy_capability += (sources[i].energyCapacity/300);
     }
 
-    if( (harvest_capability) < room_energy_capability && ! spawn.spawning && Game.time % 50 == 0 ) {
+    if( (harvest_capability) < room_energy_capability && ! spawn.spawning && Game.time % 75 == 0 ) {
       spawn_handle.generate_harvest_creep(spawn);
     }
   }

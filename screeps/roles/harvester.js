@@ -66,7 +66,32 @@ var role_harvester = {
     console.log('Target: (' + target.pos.x + ',' + target.pos.y + ')');
     return target;
   },
+  is_target_valid: function(target_id) {
+    var target = Game.getObjectById(target_id);
+    if( target == null ) return false;
+    else if( target instanceof Source && target.energy != 0 ) return true;
+    else if( target instanceof StructureController && target.progressTotal > target.progress ) return true;
+    else if( target instanceof ConstructionSite && target.progressTotal > target.progress ) return true;
+    else if( ( target instanceof StructureSpawn ||
+               target instanceof StructureTower ||
+               target instanceof StructureExtension ) &&
+             target.energyCapacity > target.energy ) return true;
+    else if( ( target instanceof StructureContainer ||
+               target instanceof StructureStorage ) &&
+             target.storeCapacity > target.store ) return true;
+    else if( ( target instanceof StructureRoad ||
+               target instanceof StructureRampart ||
+               target instanceof StructureWall ) &&
+             target.hitsMax > target.hits ) return true;
+    else return false;
+  },
   pre_task: function(creep) {
+    if( creep.memory.taskName != UNASSIGNED &&
+        ! role_harvester.is_target_valid(creep.memory.taskData.targetId) ) {
+      console.log('Original Target No Longer Valid ' + creep.name);
+      creep_handle.switch_task(creep, UNASSIGNED);
+    }
+
     if( creep.memory.taskName == UNASSIGNED ) {
       console.log("Carrying " + creep_handle.carryPercent(creep));
       // If the resource ran out of energy before we are full and we are not full
