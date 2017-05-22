@@ -8,14 +8,32 @@ var role_harvester = {
       target = creep.room.controller;
     } else {
       // Not going to collect, go store
-      target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+      target = creep.room.find(FIND_STRUCTURES,
           { filter: function(obj) {
               return _.contains([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_STORAGE, STRUCTURE_CONTAINER], obj.structureType)
-                && ( ( obj.store && obj.store < obj.storeCapacity )
-                     || ( obj.energy && obj.energy < obj.energyCapacity ) );
+                && ( ( obj.store != undefined && _.sum(obj.store) < obj.storeCapacity )
+                     || ( obj.energy != undefined && obj.energy < obj.energyCapacity ) );
             }
           }
       );
+      if( target != null ) {
+        target.sort(function(a, b) {
+          var structure_priority = [ STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION, STRUCTURE_SPAWN ];
+          if( a.structureType == b.structureType ) {
+            if( a.store != undefined ) {
+              return _.sum(a.store) - _.sum(b.store);
+            } else if (a.energy != undefined ) {
+              return a.energy - b.energy;
+            } else {
+              return 0;
+            }
+          } else {
+            return structure_priority.indexOf(a) - structure_priority.indexOf(b);
+          }
+        });
+
+        target = target[0];
+      }
       console.log('[CREEP=' + creep.name + '] Target ' + target);
       console.log('[CREEP=' + creep.name + '] POS ('+creep.pos.x+','+creep.pos.y+')');
 
@@ -50,7 +68,7 @@ var role_harvester = {
 
     if( target == null ) {
       // No raods to repair (lol, yeah right), do walls
-      target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+      target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
         algorithm: 'dijkstra',
         filter: function(obj) {
           return obj.structureType == STRUCTURE_WALL && obj.hits<obj.hitsMax;
@@ -78,7 +96,7 @@ var role_harvester = {
              target.energyCapacity > target.energy ) return true;
     else if( ( target instanceof StructureContainer ||
                target instanceof StructureStorage ) &&
-             target.storeCapacity > target.store ) return true;
+             target.storeCapacity > _.sum(target.store) ) return true;
     else if( ( target instanceof StructureRoad ||
                target instanceof StructureRampart ||
                target instanceof StructureWall ) &&
@@ -96,7 +114,7 @@ var role_harvester = {
       console.log("Carrying " + creep_handle.carryPercent(creep));
       // If the resource ran out of energy before we are full and we are not full
       var target = null;
-      if( creep_handle.carryPercent(creep) < 75 ) {
+      if( creep_handle.carryPercent(creep) < 10 ) {
         // Move to source to collect more
         target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
       } else {

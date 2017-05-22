@@ -15,6 +15,8 @@ var task_store = {
       var result = creep.transfer(target, RESOURCE_ENERGY);
       if( result == OK ) {
         return TASK_COMPLETED;
+      } else {
+        throw 'Cannot transfer resource (' + result + ')';
       }
     }
 
